@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.job.mapper.JobRelationMapper">
+  <resultMap id="BaseResultMap" type="edu.job.entity.JobRelation">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="job_id" jdbcType="BIGINT" property="jobId" />
+    <result column="hunter_id" jdbcType="BIGINT" property="hunterId" />
+    <result column="interview_id" jdbcType="BIGINT" property="interviewId" />
+    <result column="apply_time" jdbcType="TIMESTAMP" property="applyTime" />
+    <result column="can_interview" jdbcType="VARCHAR" property="canInterview" />
+    <result column="interview_time" jdbcType="VARCHAR" property="interviewTime" />
+    <result column="accept_interview" jdbcType="VARCHAR" property="acceptInterview" />
+    <result column="pass_flag" jdbcType="VARCHAR" property="passFlag" />
+    <result column="interview_evaluation" jdbcType="VARCHAR" property="interviewEvaluation" />
+    <result column="evaluation_time" jdbcType="TIMESTAMP" property="evaluationTime" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+
+    <result column="sign_flag" jdbcType="VARCHAR" property="signFlag" />
+    <result column="sign_pic_url" jdbcType="VARCHAR" property="signPicUrl" />
+    <result column="sign_date" jdbcType="TIMESTAMP" property="signDate" />
+  </resultMap>
+
+  <select id="listInvitation" resultType="edu.job.dto.job.JobRelationDTO">
+    select
+    jr.id id,
+    jr.job_id jobId,
+    jr.hunter_id hunterId,
+    jr.interview_id interviewId,
+    jr.apply_time applyTime,
+    jr.can_interview canInterview,
+    jr.interview_time interviewTime,
+    jr.accept_interview acceptInterview,
+    jr.pass_flag passFlag,
+    jr.interview_evaluation interviewEvaluation,
+    jr.evaluation_time evaluationTime,
+    jr.create_time createTime,
+    jr.sign_flag signFlag,
+    jr.sign_date signDate,
+    j.name jobName,
+    e.name companyName,
+    j.tag enterpriseTag
+    from job_relation jr
+    left join user u on u.id = jr.interview_id
+    left join enterprise_info e on e.user_id = u.id
+    left join job j on j.id = jr.job_id
+
+    <where>
+      <if test="hunterId != null and hunterId != ''">
+        and jr.hunter_id = #{hunterId}
+      </if>
+      <if test="enterpriseId != null and enterpriseId != ''">
+        and e.id = #{enterpriseId}
+      </if>
+    </where>
+  </select>
+</mapper>

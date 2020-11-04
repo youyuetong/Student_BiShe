@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.job.mapper.EnterpriseInfoMapper">
+  <resultMap id="BaseResultMap" type="edu.job.entity.EnterpriseInfo">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="birth_date" jdbcType="DATE" property="birthDate" />
+    <result column="address" jdbcType="VARCHAR" property="address" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="city" jdbcType="VARCHAR" property="city" />
+    <result column="region" jdbcType="VARCHAR" property="region" />
+    <result column="logo_url" jdbcType="VARCHAR" property="logoUrl" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="wechat_id" jdbcType="VARCHAR" property="wechatId" />
+    <result column="status" jdbcType="VARCHAR" property="status" />
+    <result column="audit_time" jdbcType="TIMESTAMP" property="auditTime" />
+    <result column="audit_by" jdbcType="VARCHAR" property="auditBy" />
+
+    <result column="logo_url" jdbcType="VARCHAR" property="logoUrl" />
+  </resultMap>
+
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    select * from enterprise_info where user_id = #{userId}
+  </select>
+
+  <select id="doquery" resultMap="BaseResultMap">
+    select * from enterprise_info
+    <where>
+      <if test="status != null and status != ''">
+        and status = #{status}
+      </if>
+      <if test="name != null and name != ''">
+        and name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="id != null and id != ''">
+        and id = #{id}
+      </if>
+    </where>
+  </select>
+</mapper>

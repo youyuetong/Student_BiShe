@@ -1,0 +1,40 @@
+#编码格式
+server:
+  tomcat:
+    uri-encoding: utf-8
+#设置为开发环境
+spring:
+  profiles:
+    active: dev
+http:
+  encoding:
+    charset: UTF-8
+    enabled: true
+    force: true
+
+#mybatis
+mybatis:
+  type-aliases-package: edu.job.entity
+  mapper-locations: classpath:mappers/**/*.xml
+  configuration:
+    #该配置项就是指将带有下划线的表字段映射为驼峰格式的实体类属性。
+    #因此，添加了该项配置后，在开发中只需要根据查询返回的字段，创建好实体类就可以了！
+    map-underscore-to-camel-case: true
+    #在控制台打印sql
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+
+#分页
+pagehelper:
+  helperDialect: mysql
+  reasonable: true
+  rowBoundsWithCount: true
+  pageSizeZero: true
+  supportMethodsArguments: true
+  params: count=countSql
+
+mappers:
+  mappers: BaseMapper
+  not-empty: true
+  identity: MYSQL
+  enumAsSimpleType: true
+

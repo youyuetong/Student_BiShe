@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.job.mapper.JobHunterMapper">
+  <resultMap id="BaseResultMap" type="edu.job.entity.JobHunter">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="user_id" jdbcType="BIGINT" property="userId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
+    <result column="mobile" jdbcType="VARCHAR" property="mobile" />
+    <result column="birth_date" jdbcType="DATE" property="birthDate" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="work_year" jdbcType="INTEGER" property="workYear" />
+    <result column="college_name" jdbcType="VARCHAR" property="collegeName" />
+    <result column="last_company" jdbcType="VARCHAR" property="lastCompany" />
+    <result column="self_introduction" jdbcType="VARCHAR" property="selfIntroduction" />
+    <result column="remark" jdbcType="VARCHAR" property="remark" />
+    <result column="can_search" jdbcType="VARCHAR" property="canSearch" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_by" jdbcType="VARCHAR" property="createBy" />
+    <result column="email" jdbcType="VARCHAR" property="email" />
+    <result column="image_url" jdbcType="VARCHAR" property="imageUrl" />
+    <result column="wechat_id" jdbcType="VARCHAR" property="wechatId" />
+
+  </resultMap>
+
+  <select id="selectByUserId" resultMap="BaseResultMap">
+    select * from job_hunter where user_id = #{userId}
+  </select>
+
+  <select id="doquery" resultMap="BaseResultMap">
+    select * from job_hunter
+    <where>
+      <if test="canSearch != null and canSearch != '' ">
+        and can_search = #{canSearch}
+
+      </if>
+      <if test="name != null and name != ''">
+        and name like CONCAT('%',#{name},'%')
+      </if>
+
+      <if test="tag != null and tag != ''">
+        and tag like CONCAT('%',#{tag},'%')
+      </if>
+      <if test="workYearStart != null and workYearStart != ''">
+        and work_year >= #{workYearStart}
+      </if>
+      <if test="workYearEnd != null and workYearEnd != ''">
+        and work_year &lt;= #{workYearEnd}
+      </if>
+      <if test="education != null and education != ''">
+        and education = #{education}
+      </if>
+      <if test="tags != null and tags.size() > 0">
+        and
+        <foreach collection="tags" index="index" item="item" open="(" separator=" and " close=")">
+          tag like CONCAT('%',#{item},'%')
+        </foreach>
+
+      </if>
+    </where>
+  </select>
+
+  <select id="listJobHunter" resultMap="BaseResultMap">
+    select * from job_hunter h
+    left join job_relation jr on jr.hunter_id = h.user_id
+    <where>
+      jr.job_id = #{jobId}
+      <if test="name != null and name != ''">
+        and name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="tag != null and tag != ''">
+        and tag like CONCAT('%',#{tag},'%')
+      </if>
+      <if test="workYearStart != null and workYearStart != ''">
+        and work_year >= #{workYearStart}
+      </if>
+      <if test="workYearEnd != null and workYearEnd != ''">
+        and work_year &lt;= #{workYearEnd}
+      </if>
+      <if test="education != null and education != ''">
+        and education = #{education}
+      </if>
+      <if test="tags != null and tags.size() > 0">
+        and
+        <foreach collection="tags" index="index" item="item" open="(" separator=" or " close=")">
+          tag like CONCAT('%',#{item},'%')
+        </foreach>
+
+      </if>
+    </where>
+  </select>
+
+  <select id="getHunterListByJobId" resultType="edu.job.dto.job.JobHunterDTO">
+    select
+    h.id id,
+    h.user_id userId,
+    h.name name,
+    h.gender gender,
+    h.mobile mobile,
+    h.birth_date birthDate,
+    h.work_year workYear,
+    h.education education,
+    h.college_name collegeName,
+    h.last_company lastCompany,
+    h.self_introduction selfIntroduction,
+    h.remark remark,
+    h.can_search canSearch,
+    h.tag tag,
+    h.create_time createTime,
+    h.email email,
+    jr.id jobRelationId,
+    jr.job_id jobId,
+    jr.hunter_id hunterId,
+    jr.interview_id interviewId,
+    jr.can_interview canInterview,
+    jr.interview_time interviewTime,
+    jr.accept_interview acceptInterview,
+    jr.pass_flag passFlag,
+    jr.evaluation_time evaluationTime,
+    jr.interview_evaluation interviewEvaluation
+    from job_relation jr
+    left join  job_hunter h on jr.hunter_id = h.id
+    <where>
+      jr.job_id = #{jobId}
+    </where>
+  </select>
+</mapper>

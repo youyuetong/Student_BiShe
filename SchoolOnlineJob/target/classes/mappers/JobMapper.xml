@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.job.mapper.JobMapper">
+  <resultMap id="BaseResultMap" type="edu.job.entity.Job">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="BIGINT" property="enterpriseId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="experience_start" jdbcType="INTEGER" property="experienceStart" />
+    <result column="experience_end" jdbcType="INTEGER" property="experienceEnd" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
+    <result column="temptation" jdbcType="VARCHAR" property="temptation" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="published_time" jdbcType="TIMESTAMP" property="publishedTime" />
+    <result column="published_by" jdbcType="VARCHAR" property="publishedBy" />
+    <result column="published_id" jdbcType="BIGINT" property="publishedId" />
+    <result column="active_flg" jdbcType="VARCHAR" property="activeFlg" />
+
+    <result column="pay_start" jdbcType="DOUBLE" property="payStart" />
+    <result column="pay_end" jdbcType="DOUBLE" property="payEnd" />
+    <result column="work_address" jdbcType="VARCHAR" property="workAddress" />
+  </resultMap>
+
+  <resultMap id="BaseResultMap2" type="edu.job.dto.job.JobDTO">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="BIGINT" property="enterpriseId" />
+    <result column="name" jdbcType="VARCHAR" property="name" />
+    <result column="experience_start" jdbcType="INTEGER" property="experienceStart" />
+    <result column="experience_end" jdbcType="INTEGER" property="experienceEnd" />
+    <result column="education" jdbcType="VARCHAR" property="education" />
+    <result column="tag" jdbcType="VARCHAR" property="tag" />
+    <result column="temptation" jdbcType="VARCHAR" property="temptation" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="published_time" jdbcType="TIMESTAMP" property="publishedTime" />
+    <result column="published_by" jdbcType="VARCHAR" property="publishedBy" />
+    <result column="published_id" jdbcType="BIGINT" property="publishedId" />
+    <result column="active_flg" jdbcType="VARCHAR" property="activeFlg" />
+    <result column="companyName" jdbcType="VARCHAR" property="companyName" />
+
+    <result column="pay_start" jdbcType="DOUBLE" property="payStart" />
+    <result column="pay_end" jdbcType="DOUBLE" property="payEnd" />
+    <result column="work_address" jdbcType="VARCHAR" property="workAddress" />
+  </resultMap>
+
+  <select id="doquery" resultMap="BaseResultMap2">
+    select j.*, e.name companyName  from job j
+    left join enterprise_info e on e.user_id = j.published_id
+    <where>
+      <if test="keyword != null and keyword != ''">
+        and
+        (
+        j.education like CONCAT('%',#{keyword},'%')
+        or
+        j.name like concat('%',#{keyword},'%')
+        or
+        j.work_address like concat('%',#{keyword},'%')
+        or
+        e.name like concat('%',#{keyword},'%')
+        )
+      </if>
+
+
+      <if test="activeFlg != null and activeFlg != ''">
+        and j.active_flg = #{activeFlg}
+      </if>
+      <if test="enterpriseId != null and enterpriseId != ''">
+        and j.enterprise_id = #{enterpriseId}
+      </if>
+      <if test="education != null and education != ''">
+        and j.education = #{education}
+      </if>
+      <if test="name != null and name != ''">
+        and j.name like CONCAT('%',#{name},'%')
+      </if>
+      <if test="enterpriseName != null and enterpriseName != ''">
+        and e.name like CONCAT('%',#{enterpriseName},'%')
+      </if>
+      <if test="address != null and address != ''">
+        and j.work_address like CONCAT('%',#{address},'%')
+      </if>
+
+      <if test="enterpriseStatus  != null and enterpriseStatus != ''">
+        and e.status = #{enterpriseStatus}
+      </if>
+    
+    </where>
+  </select>
+
+  <select id="selectByEnterpriseId" resultMap="BaseResultMap">
+    select * from job
+    where enterprise_id = #{id}
+  </select>
+</mapper>

@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.job.mappers.ChatMapper">
+  <resultMap id="BaseResultMap" type="edu.job.entity.Chat">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="to_user_id" jdbcType="BIGINT" property="toUserId" />
+    <result column="chat_content" jdbcType="VARCHAR" property="chatContent" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="chat_type" jdbcType="CHAR" property="chatType" />
+    <result column="chat_format" jdbcType="VARCHAR" property="chatFormat" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="read_flag" jdbcType="CHAR" property="readFlag" />
+  </resultMap>
+</mapper>

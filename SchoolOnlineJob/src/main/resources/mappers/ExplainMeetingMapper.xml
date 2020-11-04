@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="edu.job.mapper.ExplainMeetingMapper">
+  <resultMap id="BaseResultMap" type="edu.job.entity.ExplainMeeting">
+    <!--
+      WARNING - @mbg.generated
+    -->
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="enterprise_id" jdbcType="BIGINT" property="enterpriseId" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="introduction" jdbcType="VARCHAR" property="introduction" />
+    <result column="poster_url" jdbcType="VARCHAR" property="posterUrl" />
+    <result column="start_date" jdbcType="TIMESTAMP" property="startDate" />
+    <result column="end_date" jdbcType="TIMESTAMP" property="endDate" />
+    <result column="publish_date" jdbcType="TIMESTAMP" property="publishDate" />
+    <result column="qr_code" jdbcType="VARCHAR" property="qrCode" />
+    <result column="create_time" jdbcType="TIMESTAMP" property="createTime" />
+    <result column="create_user" jdbcType="VARCHAR" property="createUser" />
+    <result column="modify_time" jdbcType="TIMESTAMP" property="modifyTime" />
+    <result column="modify_user" jdbcType="VARCHAR" property="modifyUser" />
+  </resultMap>
+
+
+
+
+
+
+  <select id="doquery" resultMap="BaseResultMap" parameterType="java.util.Map">
+    select m.* from explain_meeting m
+    left join enterprise_info e on e.id = m.enterprise_id
+    <where>
+      <if test="enterpriseId != null and enterpriseId != ''">
+        and m.enterprise_id = #{enterpriseId}
+      </if>
+
+      <if test="title != null and title != ''">
+        and m.title = #{title}
+      </if>
+
+      <if test="startDate != null and startDate != ''">
+        and m.start_date >= #{startDate}
+      </if>
+
+      <if test="enterpriseStatus  != null and enterpriseStatus != ''">
+        and e.status = #{enterpriseStatus}
+      </if>
+    </where>
+  </select>
+</mapper>
